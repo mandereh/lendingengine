@@ -23,12 +23,13 @@ public class LoanApplicationAdapter {
 
     public LoanApplication transform(LoanRequest loanRequest){
         Optional<User> user = userRepository.findById(loanRequest.getBorrowerId());
-        if (user.isEmpty()){
-            System.out.println("hi");
-//            throw new UserNotFoundException(loanRequest.getBorrowerId());
+        if (user.isPresent()){
+            return new LoanApplication(loanRequest.getAmount(), user.get(), loanRequest.getDaysToRepay(), loanRequest.getInterestRate());
+        }else{
+            throw new UserNotFoundException(loanRequest.getBorrowerId());
         }
 
-        return new LoanApplication(loanRequest.getAmount(), user.get(), Duration.ofDays(loanRequest.getDaysToRepay()), loanRequest.getInterestRate());
+
 
     }
 }

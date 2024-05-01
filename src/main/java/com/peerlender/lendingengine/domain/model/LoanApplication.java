@@ -2,25 +2,46 @@ package com.peerlender.lendingengine.domain.model;
 
 import jakarta.persistence.*;
 
-import java.time.Duration;
 import java.util.Objects;
 
 @Entity
+@Table(name = "loan_application")
 public final class LoanApplication {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private  int amount;
     @ManyToOne
     private  User borrower;
-    private  Duration repaymentTerm;
+    private  int repaymentTermInDays;
     private  double interestRate;
 
-    public LoanApplication(int amount, User borrower, Duration repaymentTerm, double interestRate) {
+    public LoanApplication(int amount, User borrower, int repaymentTermInDays, double interestRate) {
         this.amount = amount;
         this.borrower = borrower;
-        this.repaymentTerm = repaymentTerm;
+        this.repaymentTermInDays = repaymentTermInDays;
         this.interestRate = interestRate;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public User getBorrower() {
+        return borrower;
+    }
+
+    public int getRepaymentTermInDays() {
+        return repaymentTermInDays;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
     }
 
     public LoanApplication() {
@@ -33,12 +54,12 @@ public final class LoanApplication {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LoanApplication that = (LoanApplication) o;
-        return amount == that.amount && Double.compare(interestRate, that.interestRate) == 0 && Objects.equals(borrower, that.borrower) && Objects.equals(repaymentTerm, that.repaymentTerm);
+        return amount == that.amount && Double.compare(interestRate, that.interestRate) == 0 && Objects.equals(borrower, that.borrower) && Objects.equals(repaymentTermInDays, that.repaymentTermInDays);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(amount, borrower, repaymentTerm, interestRate);
+        return Objects.hash(amount, borrower, repaymentTermInDays, interestRate);
     }
 
     @Override
@@ -46,7 +67,7 @@ public final class LoanApplication {
         return "LoanRequest{" +
                 "amount=" + amount +
                 ", borrower=" + borrower +
-                ", repaymentTerm=" + repaymentTerm +
+                ", repaymentTerm=" + repaymentTermInDays +
                 ", interestRate=" + interestRate +
                 '}';
     }
